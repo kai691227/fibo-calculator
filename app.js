@@ -40,6 +40,7 @@ let direction = localStorage.getItem("fibo_direction") || "up";
 let presets = JSON.parse(localStorage.getItem("fibo_presets") || "null") || DEFAULT_PRESETS;
 let selectedPresetId = localStorage.getItem("fibo_selected_preset") || presets[0].id;
 let lastResults = [];
+let selectedTheme = localStorage.getItem("fibo_theme") || "blue";
 
 function saveState() {
   localStorage.setItem("fibo_presets", JSON.stringify(presets));
@@ -50,6 +51,15 @@ function saveState() {
     low: els.low.value,
     current: els.current.value
   }));
+  localStorage.setItem("fibo_theme", selectedTheme);
+}
+
+function applyTheme(theme) {
+  selectedTheme = theme || "blue";
+  document.documentElement.dataset.theme = selectedTheme;
+  const select = document.getElementById("themeSelect");
+  if (select) select.value = selectedTheme;
+  localStorage.setItem("fibo_theme", selectedTheme);
 }
 
 function loadInputs() {
@@ -156,6 +166,7 @@ function showToast(message) {
 function openSettings() {
   const preset = presets.find(p => p.id === selectedPresetId) || presets[0];
   els.presetName.value = preset.name;
+  $("themeSelect").value = selectedTheme;
   els.levelEditor.innerHTML = "";
   preset.levels.forEach((level, index) => addLevelRow(level, index));
   els.settingsDialog.showModal();
@@ -239,6 +250,10 @@ els.preset.addEventListener("change", () => {
 $("settingsBtn").addEventListener("click", openSettings);
 $("addLevelBtn").addEventListener("click", () => addLevelRow());
 $("savePresetBtn").addEventListener("click", savePresetFromEditor);
+$("themeSelect").addEventListener("change", (event) => {
+  applyTheme(event.target.value);
+  showToast("主題顏色已套用");
+});
 
 $("resetBtn").addEventListener("click", () => {
   presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
@@ -253,6 +268,7 @@ $("resetBtn").addEventListener("click", () => {
   $(id).addEventListener("input", saveState);
 });
 
+applyTheme(selectedTheme);
 loadInputs();
 renderPresetOptions();
 applyDirectionUI();
