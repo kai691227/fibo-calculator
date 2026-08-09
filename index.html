@@ -1,105 +1,64 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="費波計算機" />
-  <title>費波計算機 PWA</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07101f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="費波導航">
+  <title>費波導航系統</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="app-shell">
     <header class="hero">
-      <div>
-        <p class="eyebrow">FIBONACCI TOOL</p>
-        <h1>費波計算機</h1>
-        <p class="sub">手機專用 · 可離線 · 參數可自訂</p>
-      </div>
-      <button id="settingsBtn" class="icon-btn" aria-label="開啟設定">⚙️</button>
+      <div><p class="eyebrow">FIBONACCI NAVIGATION</p><h1>費波導航系統</h1></div>
+      <button id="settingsBtn" class="icon-btn" aria-label="設定">⚙</button>
     </header>
 
-    <section class="card">
-      <div class="segmented" role="tablist" aria-label="計算方向">
-        <button class="seg-btn active" data-direction="up">上漲回撤</button>
-        <button class="seg-btn" data-direction="down">下跌反彈</button>
+    <nav class="mode-switch" aria-label="顯示模式">
+      <button class="mode-btn" data-mode="points">點位模式</button>
+      <button class="mode-btn" data-mode="full">完整模式</button>
+    </nav>
+
+    <section class="card input-card">
+      <div class="input-grid">
+        <label><span>最高</span><input id="highInput" type="number" inputmode="decimal" placeholder="例如 45246"></label>
+        <label><span>最低</span><input id="lowInput" type="number" inputmode="decimal" placeholder="例如 44362"></label>
       </div>
-
-      <label>
-        <span>高點</span>
-        <input id="highInput" type="number" inputmode="decimal" placeholder="例如 30000" />
-      </label>
-
-      <label>
-        <span>低點</span>
-        <input id="lowInput" type="number" inputmode="decimal" placeholder="例如 29000" />
-      </label>
-
-      <label>
-        <span>目前價格 <small>選填</small></span>
-        <input id="currentInput" type="number" inputmode="decimal" placeholder="例如 29600" />
-      </label>
-
-      <label>
-        <span>參數組</span>
-        <select id="presetSelect"></select>
-      </label>
-
-      <div class="button-row">
-        <button id="calcBtn" class="primary-btn">開始計算</button>
-        <button id="clearBtn" class="secondary-btn">清除</button>
-      </div>
+      <label class="full-only"><span>目前價格 <small>選填</small></span><input id="currentInput" type="number" inputmode="decimal" placeholder="用來尋找最近位置"></label>
+      <div class="button-row"><button id="calcBtn" class="primary-btn">開始計算</button><button id="clearBtn" class="secondary-btn">清除</button></div>
     </section>
 
-    <section id="summaryCard" class="card hidden">
-      <div class="summary-grid">
-        <div><span>區間</span><strong id="rangeValue">-</strong></div>
-        <div><span>方向</span><strong id="directionValue">-</strong></div>
-        <div><span>最近位置</span><strong id="nearestValue">-</strong></div>
-      </div>
+    <section id="summaryCard" class="summary-grid full-only hidden">
+      <div class="summary-card"><span>區間</span><strong id="rangeValue">—</strong></div>
+      <div class="summary-card"><span>多空中心</span><strong id="centerValue">—</strong></div>
+      <div class="summary-card"><span>啟用層數</span><strong id="countValue">—</strong></div>
+      <div class="summary-card wide"><span>最近位置</span><strong id="nearestValue">未輸入現價</strong></div>
     </section>
 
-    <section id="resultCard" class="card hidden">
-      <div class="section-head">
-        <h2>計算結果</h2>
-        <button id="copyBtn" class="small-btn">複製全部</button>
-      </div>
+    <section id="resultCard" class="card result-card hidden">
+      <div class="section-head"><div><p class="eyebrow">CENTER SYMMETRY</p><h2>九層導航</h2></div><button id="copyBtn" class="small-btn">複製全部</button></div>
       <div id="results" class="results"></div>
     </section>
-
-    <p class="footnote">資料只保存在你的手機瀏覽器中。</p>
+    <p class="footnote">中心對稱計算｜資料只保存在你的瀏覽器</p>
   </main>
 
   <dialog id="settingsDialog">
     <form method="dialog" class="dialog-panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">CUSTOM LEVELS</p>
-          <h2>費波參數設定</h2>
-        </div>
-        <button class="icon-btn" value="cancel" aria-label="關閉">✕</button>
-      </div>
-
-      <label>
-        <span>參數組名稱</span>
-        <input id="presetNameInput" type="text" maxlength="30" />
-      </label>
-
+      <div class="section-head"><div><p class="eyebrow">CUSTOM LEVELS</p><h2>費波參數設定</h2></div><button class="icon-btn" value="cancel" aria-label="關閉">×</button></div>
+      <label><span>預設顯示模式</span></label>
+      <div class="mode-switch settings-mode"><button type="button" class="default-mode-btn" data-mode="points">點位模式</button><button type="button" class="default-mode-btn" data-mode="full">完整模式</button></div>
+      <label><span>參數組名稱</span><input id="presetNameInput" type="text" maxlength="30"></label>
       <div id="levelEditor" class="level-editor"></div>
-
-      <button id="addLevelBtn" type="button" class="secondary-btn full">＋ 新增比例</button>
-
-      <div class="dialog-actions">
-        <button id="resetBtn" type="button" class="danger-btn">恢復預設</button>
-        <button id="savePresetBtn" type="button" class="primary-btn">儲存設定</button>
-      </div>
+      <button id="addLevelBtn" type="button" class="secondary-btn full-width">＋ 新增比例</button>
+      <label class="toggle-row"><span>保留上次輸入值</span><input id="rememberInput" type="checkbox"></label>
+      <div class="dialog-actions"><button id="resetBtn" type="button" class="danger-btn">恢復預設</button><button id="saveSettingsBtn" type="button" class="primary-btn">儲存設定</button></div>
     </form>
   </dialog>
-
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
