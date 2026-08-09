@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "fibo-pwa-v1-1";
+const CACHE_NAME = "fibo-pwa-v1";
 const ASSETS = [
   "./",
   "./index.html",
