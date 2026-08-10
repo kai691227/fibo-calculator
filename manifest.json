@@ -1,12 +1,10 @@
 {
   "name": "費波導航系統",
   "short_name": "費波導航",
-  "description": "以多空中心上下對稱計算的費波點位導航工具",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#050b14",
-  "theme_color": "#07101f",
-  "lang": "zh-Hant",
+  "background_color": "#06101b",
+  "theme_color": "#07111d",
   "icons": [
     {
       "src": "icon-192.png",
